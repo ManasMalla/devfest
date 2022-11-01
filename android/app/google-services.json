@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "312274445301",
+    "firebase_url": "https://devfest-22-vizag-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "devfest-22-vizag",
+    "storage_bucket": "devfest-22-vizag.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:312274445301:android:869fc1045c87032b9736bc",
+        "android_client_info": {
+          "package_name": "com.google.devfest_vizag"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "312274445301-hjlo42u1s4fs99ph4gh0ansskjr09cum.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo8MjML9vhmNMAmHxiDHks2ztDAa2l1Iw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "312274445301-hjlo42u1s4fs99ph4gh0ansskjr09cum.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "312274445301-qc5eonqngali2jgi6s0c06avflqr4gg3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.google.devfestVizag"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
