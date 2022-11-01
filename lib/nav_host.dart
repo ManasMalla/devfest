@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:devfest_vizag/login/form_fields/textfield_form.dart';
 import 'package:devfest_vizag/login/login_provider.dart';
 import 'package:devfest_vizag/main.dart';
 import 'package:devfest_vizag/reusable_widgets/loader_screen.dart';
@@ -19,6 +20,8 @@ class DevFestNavHost extends StatefulWidget {
 }
 
 class _DevFestNavHostState extends State<DevFestNavHost> {
+  TextEditingController searchController = TextEditingController();
+
   Future<void> fetchDataInBG() async {
     LoginProvider provider = Provider.of(context, listen: false);
 
@@ -102,6 +105,9 @@ class _DevFestNavHostState extends State<DevFestNavHost> {
 
   @override
   Widget build(BuildContext context) {
+    searchController.addListener(() {
+      setState(() {});
+    });
     return Consumer<LoginProvider>(builder: (context, data, _) {
       return Scaffold(
         body: LayoutBuilder(builder: (context, constraints) {
@@ -223,6 +229,77 @@ class _DevFestNavHostState extends State<DevFestNavHost> {
                                   : Expanded(
                                       child: Column(
                                         children: [
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              "Male: ${data.dataOfRegistrants.map((e) => e["gender"].toString().toLowerCase()).where((element) => element == "male").length}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headlineSmall
+                                                  ?.copyWith(
+                                                      color: Colors.blue),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                                "Female: ${data.dataOfRegistrants.map((e) => e["gender"].toString().toLowerCase()).where((element) => element == "female").length}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headlineSmall
+                                                    ?.copyWith(
+                                                        color: Colors.pink)),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              "Student: ${data.dataOfRegistrants.map((e) => e["careerStatus"].toString().toLowerCase()).where((element) => element == "student").length}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headlineSmall
+                                                  ?.copyWith(
+                                                      color: Colors.purple),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              "Intern: ${data.dataOfRegistrants.map((e) => e["careerStatus"].toString().toLowerCase()).where((element) => element == "intern").length}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headlineSmall
+                                                  ?.copyWith(
+                                                      color: Colors.orange),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              "Freelancer: ${data.dataOfRegistrants.map((e) => e["careerStatus"].toString().toLowerCase()).where((element) => element == "freelancer").length}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headlineSmall
+                                                  ?.copyWith(
+                                                      color: Colors.black),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              "Working Professional: ${data.dataOfRegistrants.map((e) => e["careerStatus"].toString().toLowerCase()).where((element) => element == "working professional").length}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headlineSmall
+                                                  ?.copyWith(
+                                                      color: Colors.green),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
                                           Row(
                                             children: [
                                               Expanded(
@@ -287,6 +364,12 @@ class _DevFestNavHostState extends State<DevFestNavHost> {
                                                 .textTheme
                                                 .titleLarge,
                                           ),
+                                          TextFieldForm(
+                                            label: "Name/Email",
+                                            icon: Icons.search_rounded,
+                                            textEditingController:
+                                                searchController,
+                                          ),
                                           Expanded(
                                             child: SingleChildScrollView(
                                               child: ListView.separated(
@@ -296,10 +379,14 @@ class _DevFestNavHostState extends State<DevFestNavHost> {
                                                       indexOfRegistrant) {
                                                     return InkWell(
                                                       onTap: () {
-                                                        showDialog(
+                                                        showModalBottomSheet(
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
                                                             context: context,
                                                             builder: (context) {
                                                               return Container(
+                                                                height: 250,
                                                                 color: Colors
                                                                     .white,
                                                                 child: ListView
@@ -312,10 +399,16 @@ class _DevFestNavHostState extends State<DevFestNavHost> {
                                                                       (context,
                                                                           _) {
                                                                     return Text(
-                                                                        "${data.dataOfRegistrants[indexOfRegistrant].keys.toList()[_]}: ${data.dataOfRegistrants[indexOfRegistrant].values.toList()[_]}");
+                                                                        "${data.dataOfRegistrants.where((element) => element["name"].toString().contains(searchController.text) || element["emailAddress"].toString().contains(searchController.text)).toList()[indexOfRegistrant].keys.toList()[_]}: ${data.dataOfRegistrants.where((element) => element["name"].toString().contains(searchController.text) || element["emailAddress"].toString().contains(searchController.text)).toList()[indexOfRegistrant].values.toList()[_]}");
                                                                   },
                                                                   itemCount: data
-                                                                      .dataOfRegistrants[
+                                                                      .dataOfRegistrants
+                                                                      .where((element) =>
+                                                                          element["name"].toString().contains(searchController
+                                                                              .text) ||
+                                                                          element["emailAddress"].toString().contains(searchController
+                                                                              .text))
+                                                                      .toList()[
                                                                           indexOfRegistrant]
                                                                       .values
                                                                       .length,
@@ -323,10 +416,22 @@ class _DevFestNavHostState extends State<DevFestNavHost> {
                                                               );
                                                             });
                                                       },
-                                                      child: Text(
-                                                          data.dataOfRegistrants[
-                                                                  indexOfRegistrant]
-                                                              ["name"]),
+                                                      child: Text(data
+                                                          .dataOfRegistrants
+                                                          .where((element) =>
+                                                              element["name"]
+                                                                  .toString()
+                                                                  .contains(
+                                                                      searchController
+                                                                          .text
+                                                                          .toString()) ||
+                                                              element["emailAddress"]
+                                                                  .toString()
+                                                                  .contains(
+                                                                      searchController
+                                                                          .text
+                                                                          .toString()))
+                                                          .toList()[indexOfRegistrant]["name"]),
                                                     );
                                                   },
                                                   separatorBuilder: (_, __) {
@@ -334,6 +439,18 @@ class _DevFestNavHostState extends State<DevFestNavHost> {
                                                   },
                                                   itemCount: data
                                                       .dataOfRegistrants
+                                                      .where((element) =>
+                                                          element["name"]
+                                                              .toString()
+                                                              .contains(
+                                                                  searchController
+                                                                      .text) ||
+                                                          element["emailAddress"]
+                                                              .toString()
+                                                              .contains(
+                                                                  searchController
+                                                                      .text))
+                                                      .toList()
                                                       .length),
                                             ),
                                           ),
